@@ -102,6 +102,7 @@ with model_results:
 
     st.write(f"La predicion para el nuevo valor es:{logmodel.predict(X_new)}\n")
     roc_auc = roc_auc_score(y_test, logmodel.predict_proba(X_test)[:, 1])
+
     st.text(f"Probabilidad={roc_auc}")
 
 
