@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from sklearn.metrics import roc_auc_score
+import seaborn as sns
 from sklearn.linear_model import LogisticRegression
 import warnings
 
@@ -24,7 +25,10 @@ with dataset:
     st.text("I've found this data set on: 'https://raw.githubusercontent.com/kaleko/CourseraML/master/ex2/data/ex2data1.txt'")
     telecom_data =pd.read_csv('telecom_churn.txt')
     st.text("This is my DATA before the EDA(Exploratory Data Analysis)")
-    st.text(telecom_data.head(3))
+    st.text(telecom_data.head())
+    st.subheader('"Churn" distribution chart on the Telco DataSet')
+    total_amount_dist = pd.DataFrame(telecom_data['Churn'].value_counts()).head(50)
+    st.bar_chart(total_amount_dist)
     # Limpieza del DF
     # carga
     # cambiar nombre
@@ -40,9 +44,14 @@ with dataset:
     telecom_data = pd.concat([telecom_data, vmp, ip], axis=1)
     telecom_data.drop('State', axis=1, inplace=True)
     st.text("This is my DATA after some EDA(Exploratory Data Analysis)")
-    st.text(telecom_data.head(6))
+    st.text(telecom_data.head(5))
+
+
+
+
 with features:
     st.header("2.The features I've modified")
+    st.markdown("* **Churn:** I convert it into numeric.")
     st.markdown("* **State:** I don't consider it an useful feature. I delete it.")
     st.markdown("* **Voice mail plan:** I convert it into numeric.")
     st.markdown("* **International plan:** I convert it into numeric.")
