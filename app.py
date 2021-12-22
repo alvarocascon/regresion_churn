@@ -114,7 +114,6 @@ with model_results:
         st.write(f"Este cliente no hará churn al {roc_aucx100} % de probabilidad")
     else:
         st.write(f"Este cliente hará churn al {roc_aucx100:.2f} % de probabilidad")
-% pip install
 
 
 
