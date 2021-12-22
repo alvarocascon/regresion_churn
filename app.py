@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+pd.options.display.max_columns = None
 from sklearn.metrics import roc_auc_score
 import seaborn as sns
 from sklearn.linear_model import LogisticRegression
