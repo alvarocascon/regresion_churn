@@ -16,13 +16,14 @@ model_results=st.container()
 
     #return telecom_data
 with header:
-    st.header('Welcome to my data science project!')
+    st.header('WELCOME TO MY DATA SCIENCE PROJECT')
     st.text('In this proyect i look into the churn of a telco company')
+    st.text('I make a model to predict whether a customer will leave the company or not')
 with dataset:
     st.header('1.Churn telco dataset')
     st.text("I've found this data set on: 'https://raw.githubusercontent.com/kaleko/CourseraML/master/ex2/data/ex2data1.txt'")
     telecom_data =pd.read_csv('telecom_churn.txt')
-    st.text("This is my DATA before the EDA")
+    st.text("This is my DATA before the EDA(Exploratory Data Analysis)")
     st.text(telecom_data.head(3))
     # Limpieza del DF
     # carga
@@ -38,14 +39,17 @@ with dataset:
     # unimos al df los dfs que hemos creado con las variables categóricas
     telecom_data = pd.concat([telecom_data, vmp, ip], axis=1)
     telecom_data.drop('State', axis=1, inplace=True)
-    st.text("This is my DATA after some EDA")
+    st.text("This is my DATA after some EDA(Exploratory Data Analysis)")
     st.text(telecom_data.head(6))
 with features:
-    st.header('2.The features I modified')
-    st.markdown("* **State:** I don't consider it an useful feature.")
-    st.markdown("* **Voice mail plan & international plan:** I converted them into numeric.")
+    st.header("2.The features I've modified")
+    st.markdown("* **State:** I don't consider it an useful feature. I delete it.")
+    st.markdown("* **Voice mail plan:** I convert it into numeric.")
+    st.markdown("* **International plan:** I convert it into numeric.")
 with model_training:
     st.header('3.Time to train the model')
+    st.text('I use train_test_split to separate my data into "X_train", "X_test", "y_train", "y_test"')
+    st.text('I use a Linear Regression for my model')
     #st.text('Choosee the hyperparameters of the model and see how the performance changes')
     sel_col, disp_col = st.columns(2)\
 
@@ -75,22 +79,23 @@ with model_training:
     logmodel.fit(X_train, y_train)
 with model_results:
     st.header("4. Let's see the predictions")
-    Account_length_new=st.number_input('New Account_length')
-    Area_code_new=st.number_input('New Area_code ')
-    Number_vmail_messages_new=st.number_input('New Number_vmail')
-    Total_day_minutes_new=st.number_input('New Total_day_minutes ')
-    Total_day_calls_new=st.number_input('New Total_day_calls')
-    Total_day_charge_new=st.number_input('New Total_day_charge')
-    Total_eve_minutes_new=st.number_input('New Total_eve_minutes_new')
-    Total_eve_calls_new=st.number_input('New Total_eve_calls')
-    Total_eve_charge_new=st.number_input('New Total_eve_charge ')
-    Total_night_minutes_new=st.number_input('New Total_night_minutes')
-    Total_night_calls_new=st.number_input('New Total_night_calls ')
-    Total_night_charge_new=st.number_input('New Total_night_charge')
-    Total_intl_minutes_new=st.number_input('New Total_intl_minutes ')
-    Total_intl_calls_new=st.number_input('New Total_intl_calls')
-    Total_intl_charge_new=st.number_input('New Total_intl_charge')
-    Customer_service_calls_new=st.number_input('New Customer_service_calls')
+    st.text('Try my model with new DATA!')
+    Account_length_new=st.number_input('New Account_length',step=1)
+    Area_code_new=st.number_input('New Area_code',step=1)
+    Number_vmail_messages_new=st.number_input('New Number_vmail',step=1)
+    Total_day_minutes_new=st.number_input('New Total_day_minutes',step=1)
+    Total_day_calls_new=st.number_input('New Total_day_calls',step=1)
+    Total_day_charge_new=st.number_input('New Total_day_charge',step=1)
+    Total_eve_minutes_new=st.number_input('New Total_eve_minutes_new',step=1)
+    Total_eve_calls_new=st.number_input('New Total_eve_calls',step=1)
+    Total_eve_charge_new=st.number_input('New Total_eve_charge ',step=1)
+    Total_night_minutes_new=st.number_input('New Total_night_minutes',step=1)
+    Total_night_calls_new=st.number_input('New Total_night_calls ',step=1)
+    Total_night_charge_new=st.number_input('New Total_night_charge',step=1)
+    Total_intl_minutes_new=st.number_input('New Total_intl_minutes ',step=1)
+    Total_intl_calls_new=st.number_input('New Total_intl_calls',step=1)
+    Total_intl_charge_new=st.number_input('New Total intl charge',step=1)
+    Customer_service_calls_new=st.number_input('New Customer service calls',step=1)
     voice_Yes_new=st.selectbox('New voice_Yes. 1=Yes/0=No', options=[0,1], index=0)
     ip_Yes_new=st.selectbox('New ip_Yes1=Yes/0=No', options=[0,1], index=0)
 
@@ -100,10 +105,21 @@ with model_results:
      'Total night calls': [Total_night_calls_new],'Total night charge': [Total_night_charge_new],'Total intl minutes': [Total_intl_minutes_new],'Total intl calls': [Total_intl_calls_new],'Total intl charge': [Total_intl_charge_new],
      'Customer service calls': [Customer_service_calls_new],'voice_Yes': [voice_Yes_new],'ip_Yes': [ip_Yes_new]})
 
-    st.write(f"La predicion para el nuevo valor es:{logmodel.predict(X_new)}\n")
+    st.write(X_new.head())
+    prediccion=logmodel.predict(X_new)
+    st.write(f"La predicion para el nuevo valor es:{prediccion}\n")
     roc_auc = roc_auc_score(y_test, logmodel.predict_proba(X_test)[:, 1])
+    roc_aucx100=roc_auc*100
+    if prediccion == [0]:
+        st.write(f"Este cliente no hará churn al {roc_aucx100} % de probabilidad")
+    else:
+        st.write(f"Este cliente hará churn al {roc_aucx100:.2f} % de probabilidad")
+% pip install
 
-    st.text(f"Probabilidad={roc_auc}")
+
+
+
+
 
 
 

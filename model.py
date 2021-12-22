@@ -20,6 +20,9 @@ df = pd.concat([df,vmp,ip],axis=1)
 df.head()
 df.drop('State',axis=1,inplace=True)
 print(df.head())
+columns_names = df.columns.values
+print (columns_names)
+
 
 #MATRIZ DE ENTRENAMIENTO
 import random
